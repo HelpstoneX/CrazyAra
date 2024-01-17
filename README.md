@@ -21,6 +21,7 @@
 </div>
 
 ## Contents
+*   [Checkmating One, by Using Many](#checkmating-one-by-using-many)
 *   [Description](#description)
 *   [Links](#links)
 *   [Download](#download)
@@ -36,6 +37,35 @@
 *   [Publications](#publications)
 
 <img align="right" src="etc/media/TU_logo.png" width="128">
+
+
+## Checkmating One, by Using Many
+### Instructions for reproducing the results in the paper
+Game phase extraction for training in [game_phase_detector.py](DeepCrazyhouse/src/preprocessing/game_phase_detector.py).
+Game phase extraction for MCTS in the [board.cpp](engine/src/environments/chess_related/board.cpp) get_phase function. Change first if condition to ```(num_phases == 3 && true)``` to use lichess phase definition when using three experts. 
+
+Workflow of training one phase expert network:
+1. Gather dataset pgn files and specify default_dir in [main_config.py](DeepCrazyhouse/configs/main_config.py). The pgn files should be placed in &lt;default_dir&gt;/pgn/&lt;set_type&gt;, see [main_config.py](DeepCrazyhouse/configs/main_config.py) for more details.
+2. Specify phase and phase_definition (either "lichess" or "movecountX") in [main_config.py](DeepCrazyhouse/configs/main_config.py)
+3. Generate planes (input representation) from pgn files with [convert_pgn_to_planes.ipynb](DeepCrazyhouse/src/preprocessing/convert_pgn_to_planes.ipynb)
+4. Use [train_cnn.py](DeepCrazyhouse/src/training/train_cnn.py) to train the expert
+   * tc.seed=9 was used for all our experiments
+   * Specify tc.export_dir for the model export directory
+   * Adjust phase_weights as needed. Use 1.0 for equal weights for all phases.
+   * For the weighted learning approach, set phase in [main_config.py](DeepCrazyhouse/configs/main_config.py) to None and only adjust phase_weights in [train_cnn.py](DeepCrazyhouse/src/training/train_cnn.py)
+5. Repeat process for each expert
+
+Workflow to use phase experts as an MoE agent in MCTS:
+1. Copy .onnx and .tar files from the best-model folder of each expert training export directory
+2. Paste .onnx and .tar files from expert i to a model directory, e.g. /data/model/ClassicAra/chess/&lt;moe_name&gt;/phase&lt;i&gt; (one phase&lt;i&gt; folder for each phase/expert)
+3. Build ClassicAra binary, see [Build Instructions](https://github.com/QueensGambit/CrazyAra/wiki/Build-instructions)
+4. Launch the ClassicAra binary.
+   * Specify the model directory as needed, e.g. "setoption name Model_Directory value /data/model/ClassicAra/chess/correct_phases"
+   * Specify Batch_Size as needed, e.g. "setoption name Batch_Size value 8"
+   * Specify GPU as needed, e.g. "setoption name First_Device_ID value 0"
+   * Generate .trt files by executing the "isready" command
+5. Run Cutechess match to compare different approaches, see [run_cutechess_experiments.py](etc/run_cutechess_experiments.py) for exemplary cutechess commands
+
 
 ## Description
 

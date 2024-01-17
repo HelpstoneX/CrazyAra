@@ -267,6 +267,7 @@ if __name__ == "__main__":
     plt.show()
 
     bins = np.linspace(0, 50, 100)
+    plt_1 = plt.figure(figsize=(6.4, 3.6))
     sns_color_cmap = sns.color_palette("colorblind", as_cmap=True)
     plt.hist(opening_moves, bins, alpha=0.5, label="Opening", color=sns_color_cmap[0])
     plt.hist(midgame_moves, bins, alpha=0.5, label="Middlegame", color=sns_color_cmap[1])
