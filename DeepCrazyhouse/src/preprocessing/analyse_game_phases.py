@@ -2,7 +2,7 @@
 @file: analyse_game_phases
 Created on 07.07.2023
 @project: CrazyAra
-@author: Felix
+@author: HelpstoneX
 
 Used to analyse the distribution of game outcomes, y_values, moves and move counts per phase
 """

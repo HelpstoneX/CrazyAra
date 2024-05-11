@@ -13,6 +13,7 @@ Authors: noelben
 # updates:
  - 2019.06.01, corrected ply-count calculation (QueensGambit)
  - 2019.06.16, added elo calculation based on cutechess (QueensGambit)
+ - 2023.09.29, added more extensive game statistics for moe tests (HelpstoneX)
 
 Requirements:
     python 3
@@ -31,7 +32,7 @@ except ImportError as err:
     print('{}, please use python 3.'.format(err))
 
 
-VERSION = '0.3.0'
+VERSION = '0.4.0'
 WHITE = 0
 BLACK = 1
 

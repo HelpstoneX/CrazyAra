@@ -26,7 +26,8 @@ if __name__ == "__main__":
 
     use960 = False
     dataset = "test"
-    prefix = "960_" if use960 else ""
+    save_figs = True
+    prefix = "plots/960_" if use960 else "plots/"
 
     import_dir = f"C:/workspace/Python/CrazyAra/data/chess960_pgns/pgn/{dataset}/" if use960 else f"C:/workspace/Python/CrazyAra/data/kingbase2019_lite_pgn_months/pgn/{dataset}/"
     pgn_filenames = os.listdir(import_dir)
@@ -131,7 +132,7 @@ if __name__ == "__main__":
     print(all_prev_switch_per_game[np.argmax(all_trans_list)][1])
 
     labels, counts = np.unique(all_trans_list, return_counts=True)
-    percentages = [count*100/sum(counts) for count in counts]
+    percentages = [round(count*100/sum(counts), 2) for count in counts]
     graph = plt.bar(labels, counts, align='center')
     plt.gca().set_xticks(labels)
     plt.xlabel("Jumps to previous phase")
@@ -149,7 +150,8 @@ if __name__ == "__main__":
                  weight='bold')
         i += 1
 
-    #plt.savefig(f'{prefix}prev_phase_jumps.pdf', bbox_inches='tight')
+    if save_figs:
+        plt.savefig(f'{prefix}prev_phase_jumps.pdf', bbox_inches='tight')
     plt.show()
 
     mid_trans_list = [x for x, _ in mid_to_open_per_game]
@@ -218,7 +220,8 @@ if __name__ == "__main__":
     plt.ylabel("Positions")
     plt.xlabel("Move")
     #plt.title("game phase distribution")
-    #plt.savefig(f'{prefix}positions_by_move_ungrouped.pdf', bbox_inches='tight')
+    if save_figs:
+        plt.savefig(f'{prefix}positions_by_move_ungrouped.pdf', bbox_inches='tight')
     plt.show()
 
     plt.boxplot(num_maj_and_min_data)
@@ -226,14 +229,16 @@ if __name__ == "__main__":
     #plt.title("Major and minor pieces left")
     plt.ylabel("Major and minor pieces left")
     plt.xlabel("Move")
-    #plt.savefig(f'{prefix}maj_min_pieces.pdf', bbox_inches='tight')
+    if save_figs:
+        plt.savefig(f'{prefix}maj_min_pieces.pdf', bbox_inches='tight')
     plt.show()
 
     plt.plot(np.array(list(range(len(backrank_sparses_data))))/2, backrank_sparses_data)
     #plt.title()
     plt.ylabel("Chance of backrank sparseness")
     plt.xlabel("Move")
-    #plt.savefig(f'{prefix}backrank.pdf', bbox_inches='tight')
+    if save_figs:
+        plt.savefig(f'{prefix}backrank.pdf', bbox_inches='tight')
     plt.show()
 
     plt.boxplot(mix_score_data)
@@ -241,7 +246,8 @@ if __name__ == "__main__":
     #plt.title("Board mixedness")
     plt.ylabel("Mixedness")
     plt.xlabel("Move")
-    #plt.savefig(f'{prefix}mixedness.pdf', bbox_inches='tight')
+    if save_figs:
+        plt.savefig(f'{prefix}mixedness.pdf', bbox_inches='tight')
     plt.show()
 
     graph = plt.bar(list(range(len(num_samples_data))), np.array(num_samples_data))
@@ -263,7 +269,8 @@ if __name__ == "__main__":
     #plt.title("num_samples")
     plt.ylabel("Positions")
     plt.xlabel("Move")
-    #plt.savefig(f'{prefix}positions_by_movecount.pdf', bbox_inches='tight')
+    if save_figs:
+        plt.savefig(f'{prefix}positions_by_movecount.pdf', bbox_inches='tight')
     plt.show()
 
     bins = np.linspace(0, 50, 100)
@@ -277,7 +284,8 @@ if __name__ == "__main__":
     plt.legend()
     plt.axvline(np.mean(midgame_start_moves)/2, 0, 1, color="black")
     plt.axvline(np.mean(endgame_start_moves)/2, 0, 1, color="black")
-    plt.savefig(f'{prefix}game_phase_distribution.pdf', bbox_inches='tight')
+    if save_figs:
+        plt.savefig(f'{prefix}game_phase_distribution.pdf', bbox_inches='tight')
     plt.show()
 
     plt.hist([opening_moves, midgame_moves, endgame_moves], bins, stacked=True, density=False, alpha=0.5, label=['opening', 'midgame', 'endgame'])
@@ -286,7 +294,8 @@ if __name__ == "__main__":
     plt.legend()
     plt.axvline(np.mean(midgame_start_moves)/2, 0, 1, color="black")
     plt.axvline(np.mean(endgame_start_moves)/2, 0, 1, color="black")
-    #plt.savefig(f'{prefix}positions_stacked.pdf', bbox_inches='tight')
+    if save_figs:
+        plt.savefig(f'{prefix}positions_stacked.pdf', bbox_inches='tight')
     plt.show()
 
     bins = np.linspace(0, 50, 50)
@@ -298,7 +307,8 @@ if __name__ == "__main__":
     plt.legend()
     plt.axvline(np.mean(midgame_start_moves)/2, 0, 1, color="black")
     plt.axvline(np.mean(endgame_start_moves)/2, 0, 1, color="black")
-    #plt.savefig(f'{prefix}phase_start_distribution.pdf', bbox_inches='tight')
+    if save_figs:
+        plt.savefig(f'{prefix}phase_start_distribution.pdf', bbox_inches='tight')
     plt.show()
 
     print("mean midgame start:", np.mean(np.array(midgame_start_moves)) / 2)
@@ -316,13 +326,9 @@ if __name__ == "__main__":
     print("earliest endgame start game", endgame_start_moves_games[np.argmin(endgame_start_moves)])
     print("latest endgame start game", endgame_start_moves_games[np.argmax(endgame_start_moves)])
 
-    plt.bar(["opening_positions", "midgame_positions", "endgame_positions"], [num_opening_moves, num_midgame_moves, num_endgame_moves])
-    plt.title("game phase position counts")
-    plt.show()
-
     labels = ["opening_positions", "midgame_positions", "endgame_positions"]
     counts = [num_opening_moves, num_midgame_moves, num_endgame_moves]
-    percentages = [count*100/sum(counts) for count in counts]
+    percentages = [round(count*100/sum(counts), 2) for count in counts]
     graph = plt.bar(labels, counts, align='center')
     plt.gca().set_xticks(labels)
     plt.title("game phase position counts")
@@ -339,6 +345,8 @@ if __name__ == "__main__":
                  ha='center',
                  weight='bold')
         i += 1
+    if save_figs:
+        plt.savefig(f'{prefix}game_phase_position_counts.pdf', bbox_inches='tight')
     plt.show()
 
     print("end")
