@@ -36,7 +36,7 @@ def generate_and_run_command(batch_size, movetime, nodes, stockfish_nodes=None):
     else:
         pgnout = f"/data/cutechess_results/{out_mode}{player_a}_vs_{player_b}_movetime{movetime}_nodes{nodes}_bs{batch_size}_sfnodes{stockfish_nodes}.pgn"
         command = f"./cutechess-cli -variant {variant} -openings file={openings_file} format=epd order=random -pgnout {pgnout} -resign movecount=5 score=600 -draw movenumber=30 movecount=4 score=20 -concurrency 1 " \
-                  f"-engine name={player_a} cmd=./FH_Stockfish dir=/data proto=uci nodes={stockfish_nodes}" \
+                  f"-engine name={player_a} cmd=./FH_Stockfish dir=/data proto=uci nodes={stockfish_nodes} movetime= " \
                   f"-engine name={out_mode}ClassicAra_{player_b} cmd=./FH_ClassicAra dir=~/CrazyAra/engine/build option.Model_Directory=/data/model/ClassicAra/chess/{player_b} proto=uci option.Batch_Size={batch_size} option.Fixed_Movetime={movetime} option.Nodes={nodes} option.Simulations={nodes * 2} option.Search_Type=mcts option.First_Device_ID={device}" \
                   f"-each tc=0/6000+0.1 -games 2 -rounds 500 -repeat "
 

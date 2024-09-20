@@ -11,6 +11,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import matplotlib
 
 
 def compare_approaches():
@@ -114,6 +115,7 @@ def visualize_approach_performance():
         matchup_df = all_match_info_df[(all_match_info_df["playerA"] == f"{prefix_960}ClassicAra_{playerA}") &
                                        (all_match_info_df["playerB"] == f"{prefix_960}ClassicAra_{playerB}")]
         nodes_experiments_df = matchup_df[matchup_df["nodes"] != 0]
+        #matplotlib.use("pdf")
         fig, ax = plt.subplots()
 
         for batch_size in batch_sizes:
@@ -134,9 +136,17 @@ def visualize_approach_performance():
         plt.legend(loc="lower right")
         ax.grid(axis='y')
         #plt.title(f"{playerA} vs {playerB}")
+        plt.xlim(50, 3250)
         plt.axhline(y=76.24, color="black", linestyle="--")
+        area = plt.fill_between([100, 3200], 76.24-18.85, 76.24+18.85, color='black', alpha=0.1)
+        #area.set_hatch("///")
+        #plt.fill([100, 3200, 3200, 100], [76.24-18.85, 76.24-18.85, 76.24+18.85, 76.24+18.85], color='black', alpha=0.5, hatch="///", fill=False)
+        plt.text(3200, 76.24 - 10, "Stockfish 16.1 (4k Nodes)", horizontalalignment='right')
         plt.savefig(f'plots/{prefix_960}{playerA}_vs_{playerB}.pdf', bbox_inches='tight')
         plt.show()
+
+        #plt.fill_between(x=curr_bs_df["nodes"], y1=np.array([76.24]*len(curr_bs_df)) + np.array([18.85]*len(curr_bs_df)),
+        #                 y2=np.array([76.24]*len(curr_bs_df)) - np.array([18.85]*len(curr_bs_df)), alpha=0.2)
 
         # batch sizes by movetime
         movetime_experiments_df = matchup_df[matchup_df["movetime"] != 0]
