@@ -132,7 +132,7 @@ if "movecount" in main_config["phase_definition"]:
 
 # directory to write and read weights, logs, onnx and other export files
 #tc.export_dir = "C:/workspace/Python/CrazyAra/data/train_phase2/"
-tc.export_dir = f"/data/run_model_exports_movecount/movecount4_train_phase_0/"
+tc.export_dir = f"/data/run_model_exports_alphavile/tiny_train_phase_None/"
 
 tc.div_factor = 0.5  # div factor is a constant which can be used to reduce the batch size and learning rate respectively
 # use a value greater 1 if you encounter memory allocation errors

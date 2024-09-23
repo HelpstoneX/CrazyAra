@@ -16,7 +16,7 @@ default_dir = "/data/kingbase2019_lite_pgn_months/"
 #default_dir = "C:/workspace/Python/CrazyAra/data/chess960_pgns/"
 phase = None  # current phase to use, set to None to treat everything as a single phase
 # type of phase definition, either "lichess" or "movecountX" with X determining the number of phases
-phase_definition = "movecount3"
+phase_definition = "lichess"
 
 if default_dir[-1] != "/":
     default_dir = default_dir + "/"
