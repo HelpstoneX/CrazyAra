@@ -841,7 +841,8 @@ print('best val_loss: %.5f with v_policy_acc: %.5f at k_steps_best %d' % (val_lo
 
 # In[ ]:
 
-
+if hasattr(model, "merge_bn"):
+    model.merge_bn()
 if tc.use_wdl and tc.use_plys_to_end:
     outputs = [main_config['value_output']+'_output', main_config['policy_output']+'_output',
                main_config['auxiliary_output']+'_output',
