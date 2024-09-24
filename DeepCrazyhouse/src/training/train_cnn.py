@@ -74,7 +74,6 @@ if tc.framework == 'pytorch':
     from DeepCrazyhouse.src.training.trainer_agent_pytorch import TrainerAgentPytorch, save_torch_state,\
     load_torch_state, export_to_onnx, get_context, get_data_loader, evaluate_metrics
     # architectures
-    from DeepCrazyhouse.src.domain.neural_net.architectures.pytorch.rise_mobile_v3 import RiseV3, get_rise_v33_model_by_train_config
     from DeepCrazyhouse.src.domain.neural_net.architectures.pytorch.alpha_vile import get_alpha_vile_model
     from DeepCrazyhouse.src.domain.neural_net.architectures.pytorch.vision_transformer import VisionTransformer
     from DeepCrazyhouse.src.domain.neural_net.architectures.pytorch.vit_configs import get_b8_config
